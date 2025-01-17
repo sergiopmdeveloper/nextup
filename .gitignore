@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Framework
+.next
+
+# TypeScript
+next-env.d.ts
+
+# Development container
+.devcontainer
