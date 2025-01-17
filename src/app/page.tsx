@@ -1,6 +1,8 @@
+import { Button } from '@heroui/button';
+
 /**
  * Home page component.
  */
 export default function Home() {
-  return <h1 className="font-bold">Hello world!</h1>;
+  return <Button color="primary">Hello world!</Button>;
 }
