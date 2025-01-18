@@ -83,8 +83,8 @@ export default function SignInForm() {
               color="primary"
               isLoading={pending}
             >
-              Send
               {!pending && <ArrowRight />}
+              Send
             </Button>
           </CardFooter>
         </Card>
