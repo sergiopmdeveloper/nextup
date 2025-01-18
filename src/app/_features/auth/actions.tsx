@@ -1,5 +1,9 @@
+'use server';
+
+import { UserRepository } from '@/app/_data/user';
 import { signInFormSchema } from '@/app/_features/auth/schemas';
 import { type SignInFormState } from '@/app/_features/auth/types';
+import argon2 from 'argon2';
 
 /**
  * Signs the user in.
@@ -19,6 +23,16 @@ export async function signIn(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { email, password } = validatedFields.data;
+
+  const user = await UserRepository.findUserByEmail(email);
+
+  if (!user || !(await argon2.verify(user.password, password))) {
+    return {
+      invalidCredentials: true,
     };
   }
 
