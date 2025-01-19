@@ -2,16 +2,19 @@
 
 import SessionRepository from '@/app/_data/session';
 import UserRepository from '@/app/_data/user';
+import { SESSION_ID_COOKIE } from '@/app/_features/auth/constants';
 import { signInFormSchema } from '@/app/_features/auth/schemas';
 import { type SignInFormState } from '@/app/_features/auth/types';
 import { generateToken } from '@/app/_features/auth/utils';
 import argon2 from 'argon2';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 /**
  * Signs the user in.
  * @param {SignInFormState} _ - The current form state.
  * @param {FormData} formData - The form data.
- * @returns {Promise<SignInFormState>} The new form state.
+ * @returns {Promise<SignInFormState>} The new form state or the redirection to the account page.
  */
 export async function signIn(
   _: SignInFormState,
@@ -38,9 +41,17 @@ export async function signIn(
     };
   }
 
-  const token = await generateToken();
+  const session = await SessionRepository.create(
+    user.id,
+    await generateToken()
+  );
 
-  await SessionRepository.create(user.id, token);
+  const cookieStore = await cookies();
 
-  return {};
+  cookieStore.set(SESSION_ID_COOKIE.name, session.id, {
+    ...SESSION_ID_COOKIE.options,
+    expires: new Date(Date.now() + SESSION_ID_COOKIE.duration),
+  });
+
+  redirect('/account');
 }
