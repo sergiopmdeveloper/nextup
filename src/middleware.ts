@@ -8,7 +8,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 /**
  * App middleware.
  * @param {NextRequest} request - The request object.
- * @returns {Promise<Response | void>} The response object or nothing.
+ * @returns {Promise<Response | void>} The response object in case it exists.
  */
 export async function middleware(
   request: NextRequest
