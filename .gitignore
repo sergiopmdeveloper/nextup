@@ -16,3 +16,6 @@ prisma/dev.db-journal
 
 # Environment
 .env
+
+# Visual Studio Code
+.vscode
