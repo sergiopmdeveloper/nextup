@@ -1,5 +1,6 @@
 'use client';
 
+import { signOut } from '@/app/_features/auth/actions';
 import { PROTECTED_PATHS } from '@/app/_features/auth/constants';
 import { Button } from '@heroui/button';
 import { Link } from '@heroui/link';
@@ -13,12 +14,14 @@ import {
   NavbarMenuToggle,
 } from '@heroui/navbar';
 import { usePathname } from 'next/navigation';
+import { useActionState } from 'react';
 
 /**
  * Header component.
  */
 export default function Header() {
   const pathname = usePathname();
+  const [_, action, pending] = useActionState(signOut, undefined);
 
   return (
     <Navbar maxWidth="2xl">
@@ -71,9 +74,16 @@ export default function Header() {
         ) : (
           <>
             <NavbarItem>
-              <Button variant="flat" color="danger">
-                Sign out
-              </Button>
+              <form action={action}>
+                <Button
+                  type="submit"
+                  variant="flat"
+                  color="danger"
+                  isLoading={pending}
+                >
+                  Sign out
+                </Button>
+              </form>
             </NavbarItem>
           </>
         )}

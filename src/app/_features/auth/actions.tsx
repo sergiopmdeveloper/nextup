@@ -55,3 +55,14 @@ export async function signIn(
 
   redirect('/account');
 }
+
+/**
+ * Signs the user out.
+ */
+export async function signOut() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete(SESSION_ID_COOKIE.name);
+
+  redirect('/sign-in');
+}
