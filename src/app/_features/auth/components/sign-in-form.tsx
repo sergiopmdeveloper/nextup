@@ -19,9 +19,9 @@ export default function SignInForm() {
   const [state, action, pending] = useActionState(signIn, undefined);
 
   return (
-    <section className="flex h-screen w-full items-center justify-center">
-      <div className="relative">
-        <Card className="w-[450px]">
+    <section className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
+      <div className="relative w-[450px]">
+        <Card className="w-full">
           <CardHeader>
             <div className="space-y-2">
               <h1 className="text-4xl font-bold text-content1-foreground">
