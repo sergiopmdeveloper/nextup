@@ -15,6 +15,10 @@ export function useStatus(): void {
       toast.error('Sign in to access your account');
     }
 
+    if (status === 'expired') {
+      toast.error('Session expired');
+    }
+
     window.history.replaceState({}, '', window.location.pathname);
   }, [searchParams]);
 }

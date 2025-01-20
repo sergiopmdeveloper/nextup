@@ -6,6 +6,19 @@ import { type Session } from '@prisma/client';
  */
 export default class SessionRepository {
   /**
+   * Gets a session via their ID.
+   * @param {string} id - The ID of the session.
+   * @returns {Promise<Session | null>} The session in case it exists.
+   */
+  static async getById(id: string): Promise<Session | null> {
+    return await db.session.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  /**
    * Creates a new session for a user.
    * @param {string} userId - The ID of the user to create a session for.
    * @param {string} token - The token of the session to be created.
