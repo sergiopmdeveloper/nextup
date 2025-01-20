@@ -1,3 +1,4 @@
+import Header from '@/app/_features/base/components/header';
 import '@/globals.css';
 import { Providers } from '@/providers';
 import type { Metadata } from 'next';
@@ -19,7 +20,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );
