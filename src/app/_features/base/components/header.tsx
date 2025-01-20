@@ -33,17 +33,23 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        {!PROTECTED_PATHS.includes(pathname) && (
+        {!PROTECTED_PATHS.includes(pathname) ? (
           <>
             <NavbarItem>
               <Link color="foreground">Public links</Link>
+            </NavbarItem>
+          </>
+        ) : (
+          <>
+            <NavbarItem>
+              <Link color="foreground">Private links</Link>
             </NavbarItem>
           </>
         )}
       </NavbarContent>
 
       <NavbarContent justify="end">
-        {!PROTECTED_PATHS.includes(pathname) && (
+        {!PROTECTED_PATHS.includes(pathname) ? (
           <>
             <NavbarItem className="hidden md:block">
               <Button
@@ -62,11 +68,19 @@ export default function Header() {
               </Button>
             </NavbarItem>
           </>
+        ) : (
+          <>
+            <NavbarItem>
+              <Button variant="flat" color="danger">
+                Sign out
+              </Button>
+            </NavbarItem>
+          </>
         )}
       </NavbarContent>
 
       <NavbarMenu className="overflow-y-hidden">
-        {!PROTECTED_PATHS.includes(pathname) && (
+        {!PROTECTED_PATHS.includes(pathname) ? (
           <>
             <NavbarMenuItem>
               <Link className="w-full" color="foreground" size="lg">
@@ -82,6 +96,14 @@ export default function Header() {
                 size="lg"
               >
                 Sign up
+              </Link>
+            </NavbarMenuItem>
+          </>
+        ) : (
+          <>
+            <NavbarMenuItem>
+              <Link className="w-full" color="foreground" size="lg">
+                Private links
               </Link>
             </NavbarMenuItem>
           </>
