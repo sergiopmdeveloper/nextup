@@ -14,14 +14,12 @@ import {
   NavbarMenuToggle,
 } from '@heroui/navbar';
 import { usePathname } from 'next/navigation';
-import { useActionState } from 'react';
 
 /**
  * Header component.
  */
 export default function Header() {
   const pathname = usePathname();
-  const [_, action, pending] = useActionState(signOut, undefined);
 
   return (
     <Navbar maxWidth="2xl">
@@ -74,13 +72,8 @@ export default function Header() {
         ) : (
           <>
             <NavbarItem>
-              <form action={action}>
-                <Button
-                  type="submit"
-                  variant="flat"
-                  color="danger"
-                  isLoading={pending}
-                >
+              <form action={signOut}>
+                <Button type="submit" variant="flat" color="danger">
                   Sign out
                 </Button>
               </form>
