@@ -84,7 +84,7 @@ export async function signUp(
     };
   }
 
-  const { email } = validatedFields.data;
+  const { name, email, password } = validatedFields.data;
 
   const user = await UserRepository.findByEmail(email);
 
@@ -94,7 +94,21 @@ export async function signUp(
     };
   }
 
-  return {};
+  const newUser = await UserRepository.create(name, email, password);
+
+  const session = await SessionRepository.create(
+    newUser.id,
+    await generateToken()
+  );
+
+  const cookieStore = await cookies();
+
+  cookieStore.set(SESSION_ID_COOKIE.name, session.id, {
+    ...SESSION_ID_COOKIE.options,
+    expires: new Date(Date.now() + SESSION_ID_COOKIE.duration),
+  });
+
+  redirect('/account');
 }
 
 /**
