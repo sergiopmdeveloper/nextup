@@ -84,6 +84,16 @@ export async function signUp(
     };
   }
 
+  const { email } = validatedFields.data;
+
+  const user = await UserRepository.findByEmail(email);
+
+  if (user) {
+    return {
+      emailAlreadyInUse: true,
+    };
+  }
+
   return {};
 }
 

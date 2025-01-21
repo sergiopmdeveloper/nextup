@@ -15,6 +15,6 @@ export type SignUpFormState =
         email?: string[];
         password?: string[];
       };
-      invalidCredentials?: boolean;
+      emailAlreadyInUse?: boolean;
     }
   | undefined;

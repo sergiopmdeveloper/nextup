@@ -4,6 +4,7 @@ import { signUp } from '@/app/_features/auth/actions';
 import { handleActionSubmit } from '@/app/_features/base/utils';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
+import { Chip } from '@heroui/chip';
 import { Divider } from '@heroui/divider';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
@@ -96,6 +97,12 @@ export default function SignUpForm() {
             </Button>
           </CardFooter>
         </Card>
+
+        {state?.emailAlreadyInUse && (
+          <Chip className="absolute -top-10 right-0" color="danger">
+            Email already in use
+          </Chip>
+        )}
       </div>
     </section>
   );
