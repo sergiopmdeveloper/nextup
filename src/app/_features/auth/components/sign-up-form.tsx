@@ -56,6 +56,7 @@ export default function SignUpForm() {
                 name="email"
                 autoComplete="email"
                 label="Email"
+                isRequired
                 isInvalid={!!state?.errors?.email}
                 errorMessage={state?.errors?.email?.[0]}
               />
@@ -66,6 +67,7 @@ export default function SignUpForm() {
                 type="password"
                 autoComplete="current-password"
                 label="Password"
+                isRequired
                 isInvalid={!!state?.errors?.password}
                 errorMessage={state?.errors?.password?.[0]}
               />
