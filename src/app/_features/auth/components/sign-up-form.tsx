@@ -1,5 +1,7 @@
 'use client';
 
+import { signUp } from '@/app/_features/auth/actions';
+import { handleActionSubmit } from '@/app/_features/base/utils';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
@@ -7,11 +9,14 @@ import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { Link } from '@heroui/link';
 import { ArrowRight } from 'lucide-react';
+import { useActionState } from 'react';
 
 /**
  * Sign up form component.
  */
 export default function SignUpForm() {
+  const [state, action, pending] = useActionState(signUp, undefined);
+
   return (
     <section className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
       <div className="relative w-[450px]">
@@ -31,12 +36,18 @@ export default function SignUpForm() {
           <Divider />
 
           <CardBody>
-            <Form className="space-y-2" id="sign-up-form">
+            <Form
+              className="space-y-2"
+              id="sign-up-form"
+              onSubmit={(e) => handleActionSubmit(e, action)}
+            >
               <Input
                 id="name"
                 name="name"
                 autoComplete="given-name"
                 label="Name"
+                isInvalid={!!state?.errors?.name}
+                errorMessage={state?.errors?.name?.[0]}
               />
 
               <Input
@@ -44,6 +55,8 @@ export default function SignUpForm() {
                 name="email"
                 autoComplete="email"
                 label="Email"
+                isInvalid={!!state?.errors?.email}
+                errorMessage={state?.errors?.email?.[0]}
               />
 
               <Input
@@ -52,6 +65,8 @@ export default function SignUpForm() {
                 type="password"
                 autoComplete="current-password"
                 label="Password"
+                isInvalid={!!state?.errors?.password}
+                errorMessage={state?.errors?.password?.[0]}
               />
             </Form>
 
@@ -74,8 +89,9 @@ export default function SignUpForm() {
               type="submit"
               form="sign-up-form"
               color="primary"
+              isLoading={pending}
             >
-              <ArrowRight />
+              {pending && <ArrowRight />}
               Send
             </Button>
           </CardFooter>

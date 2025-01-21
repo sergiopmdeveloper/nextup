@@ -7,3 +7,14 @@ export type SignInFormState =
       invalidCredentials?: boolean;
     }
   | undefined;
+
+export type SignUpFormState =
+  | {
+      errors?: {
+        name?: string[];
+        email?: string[];
+        password?: string[];
+      };
+      invalidCredentials?: boolean;
+    }
+  | undefined;
