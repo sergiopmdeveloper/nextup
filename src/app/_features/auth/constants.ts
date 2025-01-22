@@ -6,5 +6,5 @@ export const SESSION_ID_COOKIE = {
   duration: 24 * 60 * 60 * 1000,
 };
 
-export const AUTH_PATHS = ['/sign-in'];
+export const AUTH_PATHS = ['/sign-in', '/sign-up'];
 export const PROTECTED_PATHS = ['/account'];

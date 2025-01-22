@@ -1,6 +1,6 @@
 'use client';
 
-import { signIn } from '@/app/_features/auth/actions';
+import { signUp } from '@/app/_features/auth/actions';
 import { handleActionSubmit } from '@/app/_features/base/utils';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
@@ -13,10 +13,10 @@ import { ArrowRight } from 'lucide-react';
 import { useActionState } from 'react';
 
 /**
- * Sign in form component.
+ * Sign up form component.
  */
-export default function SignInForm() {
-  const [state, action, pending] = useActionState(signIn, undefined);
+export default function SignUpForm() {
+  const [state, action, pending] = useActionState(signUp, undefined);
 
   return (
     <section className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
@@ -25,11 +25,11 @@ export default function SignInForm() {
           <CardHeader>
             <div className="space-y-2">
               <h1 className="text-4xl font-bold text-content1-foreground">
-                Sign in
+                Sign up
               </h1>
 
               <p className="text-sm text-content4-foreground">
-                Access your account
+                Create a new account
               </p>
             </div>
           </CardHeader>
@@ -39,9 +39,18 @@ export default function SignInForm() {
           <CardBody>
             <Form
               className="space-y-2"
-              id="sign-in-form"
+              id="sign-up-form"
               onSubmit={(e) => handleActionSubmit(e, action)}
             >
+              <Input
+                id="name"
+                name="name"
+                autoComplete="given-name"
+                label="Name"
+                isInvalid={!!state?.errors?.name}
+                errorMessage={state?.errors?.name?.[0]}
+              />
+
               <Input
                 id="email"
                 name="email"
@@ -66,11 +75,11 @@ export default function SignInForm() {
 
             <div className="mt-3 flex flex-wrap gap-1.5">
               <p className="text-sm text-content4-foreground">
-                Do you not have an account?
+                Do you already have an account?
               </p>
 
-              <Link href="/sign-up" underline="always" size="sm">
-                Sign up
+              <Link href="/sign-in" underline="always" size="sm">
+                Sign in
               </Link>
             </div>
           </CardBody>
@@ -81,19 +90,19 @@ export default function SignInForm() {
             <Button
               className="w-full"
               type="submit"
-              form="sign-in-form"
+              form="sign-up-form"
               color="primary"
               isLoading={pending}
             >
-              {!pending && <ArrowRight />}
+              {pending && <ArrowRight />}
               Send
             </Button>
           </CardFooter>
         </Card>
 
-        {state?.invalidCredentials && (
+        {state?.emailAlreadyInUse && (
           <Chip className="absolute -top-10 right-0" color="danger">
-            Invalid email or password
+            Email already in use
           </Chip>
         )}
       </div>
