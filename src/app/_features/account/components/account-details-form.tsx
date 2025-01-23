@@ -3,12 +3,13 @@ import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
+import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
 
 /**
  * Account details form component.
  */
-export default function AccountDetailsForm() {
+export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   return (
     <Card className="mt-4 w-1/2 border shadow-none">
       <CardHeader>
@@ -27,7 +28,13 @@ export default function AccountDetailsForm() {
 
       <CardBody>
         <Form className="space-y-2" id="account-details-form">
-          <Input id="name" name="name" autoComplete="given-name" label="Name" />
+          <Input
+            id="name"
+            name="name"
+            autoComplete="given-name"
+            label="Name"
+            defaultValue={user.name as string}
+          />
         </Form>
       </CardBody>
 
@@ -47,3 +54,10 @@ export default function AccountDetailsForm() {
     </Card>
   );
 }
+
+/**
+ * Account details form component props.
+ */
+type AccountDetailsFormProps = {
+  user: User;
+};

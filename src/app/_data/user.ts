@@ -1,3 +1,4 @@
+import SessionRepository from '@/app/_data/session';
 import db from '@/db';
 import { type User } from '@prisma/client';
 import argon2 from 'argon2';
@@ -40,5 +41,33 @@ export default class UserRepository {
         email: email,
       },
     });
+  }
+
+  /**
+   * Finds a user via their ID.
+   * @param {string} userId - The ID of the user.
+   * @returns {Promise<User | null>} The user in case it exists.
+   */
+  static async findById(userId: string): Promise<User | null> {
+    return await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  }
+
+  /**
+   * Finds a user by an ID of one of its sessions.
+   * @param {string} sessionId - The ID of the session.
+   * @returns {Promise<User | null>} The user in case it exists.
+   */
+  static async findBySession(sessionId: string): Promise<User | null> {
+    const session = await SessionRepository.findById(sessionId);
+
+    if (session) {
+      return await this.findById(session.userId);
+    }
+
+    return null;
   }
 }

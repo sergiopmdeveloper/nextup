@@ -6,11 +6,11 @@ import { type Session } from '@prisma/client';
  */
 export default class SessionRepository {
   /**
-   * Gets a session via their ID.
+   * Finds a session via their ID.
    * @param {string} id - The ID of the session.
    * @returns {Promise<Session | null>} The session in case it exists.
    */
-  static async getById(id: string): Promise<Session | null> {
+  static async findById(id: string): Promise<Session | null> {
     return await db.session.findUnique({
       where: {
         id,
