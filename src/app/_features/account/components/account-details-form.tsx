@@ -9,7 +9,7 @@ import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 /**
@@ -22,6 +22,12 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   );
 
   const [name, setName] = useState(user.name);
+
+  useEffect(() => {
+    if (!state?.errors) {
+      toast.success('Account details updated successfully');
+    }
+  }, [state]);
 
   return (
     <Card className="mt-4 w-1/2 border shadow-none">
@@ -43,10 +49,7 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
         <Form
           className="space-y-2"
           id="account-details-form"
-          onSubmit={(e) => {
-            handleActionSubmit(e, action);
-            toast.success('Account updated successfully');
-          }}
+          onSubmit={(e) => handleActionSubmit(e, action)}
         >
           <input id="userId" name="userId" defaultValue={user.id} hidden />
 
