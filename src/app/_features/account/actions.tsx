@@ -1,5 +1,9 @@
+'use server';
+
+import UserRepository from '@/app/_data/user';
 import { accountDetailsFormSchema } from '@/app/_features/account/schemas';
 import { type AccountDetailsFormState } from '@/app/_features/account/types';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Updates the account details of a user.
@@ -20,6 +24,13 @@ export async function updateAccountDetails(
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
+
+  const userId = formData.get('userId') as string;
+  const { name } = validatedFields.data;
+
+  await UserRepository.updateName(userId, name);
+
+  revalidatePath('/account');
 
   return {};
 }

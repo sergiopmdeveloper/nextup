@@ -10,6 +10,7 @@ import { Input } from '@heroui/input';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
 import { useActionState, useState } from 'react';
+import toast from 'react-hot-toast';
 
 /**
  * Account details form component.
@@ -42,8 +43,13 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
         <Form
           className="space-y-2"
           id="account-details-form"
-          onSubmit={(e) => handleActionSubmit(e, action)}
+          onSubmit={(e) => {
+            handleActionSubmit(e, action);
+            toast.success('Account updated successfully');
+          }}
         >
+          <input id="userId" name="userId" defaultValue={user.id} hidden />
+
           <Input
             id="name"
             name="name"

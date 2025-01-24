@@ -4,6 +4,7 @@ import { signOut } from '@/app/_features/auth/actions';
 import { SESSION_ID_COOKIE } from '@/app/_features/auth/constants';
 import Section from '@/app/_features/base/components/section';
 import { cookies } from 'next/headers';
+import { Toaster } from 'react-hot-toast';
 
 /**
  * Account page component.
@@ -24,6 +25,7 @@ export default async function Account() {
     <Section>
       <h1 className="text-3xl">Account</h1>
       <AccountDetailsForm user={user} />
+      <Toaster position="bottom-right" />
     </Section>
   );
 }

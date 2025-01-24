@@ -70,4 +70,24 @@ export default class UserRepository {
 
     return null;
   }
+
+  /**
+   * Updates the name of a user.
+   * @param {string} userId - The ID of the user.
+   * @param {string | undefined} name - The new name.
+   * @returns {Promise<User>} The updated user.
+   */
+  static async updateName(
+    userId: string,
+    name: string | undefined
+  ): Promise<User> {
+    return await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: name,
+      },
+    });
+  }
 }
