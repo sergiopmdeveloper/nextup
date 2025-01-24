@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
@@ -5,11 +7,14 @@ import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 
 /**
  * Account details form component.
  */
 export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
+  const [name, setName] = useState(user.name);
+
   return (
     <Card className="mt-4 w-1/2 border shadow-none">
       <CardHeader>
@@ -34,6 +39,7 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
             autoComplete="given-name"
             label="Name"
             defaultValue={user.name as string}
+            onValueChange={setName}
           />
         </Form>
       </CardBody>
@@ -46,6 +52,7 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
           type="submit"
           form="account-details-form"
           color="primary"
+          isDisabled={name === user.name}
         >
           <ArrowRight />
           Send
