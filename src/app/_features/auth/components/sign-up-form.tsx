@@ -94,7 +94,7 @@ export default function SignUpForm() {
               color="primary"
               isLoading={pending}
             >
-              {pending && <ArrowRight />}
+              {!pending && <ArrowRight />}
               Send
             </Button>
           </CardFooter>

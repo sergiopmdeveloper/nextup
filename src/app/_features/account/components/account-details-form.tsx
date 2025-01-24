@@ -1,5 +1,7 @@
 'use client';
 
+import { updateAccountDetails } from '@/app/_features/account/actions';
+import { handleActionSubmit } from '@/app/_features/base/utils';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
@@ -7,12 +9,17 @@ import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 
 /**
  * Account details form component.
  */
 export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
+  const [state, action, pending] = useActionState(
+    updateAccountDetails,
+    undefined
+  );
+
   const [name, setName] = useState(user.name);
 
   return (
@@ -32,7 +39,11 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
       <Divider />
 
       <CardBody>
-        <Form className="space-y-2" id="account-details-form">
+        <Form
+          className="space-y-2"
+          id="account-details-form"
+          onSubmit={(e) => handleActionSubmit(e, action)}
+        >
           <Input
             id="name"
             name="name"
@@ -40,6 +51,8 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
             label="Name"
             defaultValue={user.name as string}
             onValueChange={setName}
+            isInvalid={!!state?.errors?.name}
+            errorMessage={state?.errors?.name?.[0]}
           />
         </Form>
       </CardBody>
@@ -53,8 +66,9 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
           form="account-details-form"
           color="primary"
           isDisabled={name === user.name}
+          isLoading={pending}
         >
-          <ArrowRight />
+          {!pending && <ArrowRight />}
           Send
         </Button>
       </CardFooter>
