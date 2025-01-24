@@ -20,7 +20,7 @@ export async function GET(_: Request): Promise<Response> {
     );
   }
 
-  const session = await SessionRepository.getById(sessionIdCookie.value);
+  const session = await SessionRepository.findById(sessionIdCookie.value);
 
   if (!session) {
     return Response.json(
