@@ -28,7 +28,7 @@ export default function ChangeEmailPasswordBlock() {
           Change email
         </Button>
 
-        <Button as={Link} variant="flat">
+        <Button as={Link} href="/change-password" variant="flat">
           Change password
         </Button>
       </CardBody>
