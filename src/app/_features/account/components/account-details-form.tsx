@@ -30,7 +30,7 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   }, [state]);
 
   return (
-    <Card className="mt-4 w-1/2 border shadow-none">
+    <Card className="border shadow-none sm:w-1/2">
       <CardHeader>
         <div className="space-y-0.5">
           <h1 className="text-xl font-bold text-content1-foreground">
