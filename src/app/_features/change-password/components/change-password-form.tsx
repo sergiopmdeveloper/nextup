@@ -46,12 +46,17 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
               id="change-password-form"
               onSubmit={(e) => handleActionSubmit(e, action)}
             >
-              <input id="userId" name="userId" defaultValue={user.id} hidden />
-
               <input
                 id="processId"
                 name="processId"
                 defaultValue={processId}
+                hidden
+              />
+
+              <input
+                id="realActualPassword"
+                name="realActualPassword"
+                defaultValue={user.password}
                 hidden
               />
 

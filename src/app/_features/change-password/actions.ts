@@ -1,5 +1,8 @@
+'use server';
+
 import { changePasswordFormSchema } from '@/app/_features/change-password/schemas';
 import { ChangePasswordFormState } from '@/app/_features/change-password/types';
+import argon2 from 'argon2';
 
 /**
  * Changes the password of a user.
@@ -19,6 +22,17 @@ export async function changePassword(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { actualPassword } = validatedFields.data;
+  const realActualPassword = formData.get('realActualPassword') as string;
+
+  if (!(await argon2.verify(realActualPassword, actualPassword))) {
+    return {
+      errors: {
+        actualPassword: ['Incorrect password.'],
+      },
     };
   }
 
