@@ -1,6 +1,7 @@
 import AccountDetailsForm from '@/app/_features/account/components/account-details-form';
 import ChangeEmailPasswordBlock from '@/app/_features/account/components/change-email-password-block';
-import { getSessionUser } from '@/app/_features/auth/utils';
+import { signOut } from '@/app/_features/auth/actions';
+import { getActiveUser } from '@/app/_features/auth/utils';
 import Section from '@/app/_features/base/components/section';
 import { Toaster } from 'react-hot-toast';
 
@@ -8,7 +9,12 @@ import { Toaster } from 'react-hot-toast';
  * Account page component.
  */
 export default async function Account() {
-  const user = await getSessionUser();
+  const user = await getActiveUser();
+
+  if (!user) {
+    await signOut();
+    throw new Error('User not found for the active session');
+  }
 
   return (
     <Section>
