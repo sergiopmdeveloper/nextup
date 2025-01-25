@@ -14,6 +14,8 @@ import toast from 'react-hot-toast';
 
 /**
  * Account details form component.
+ * @param {AccountDetailsFormProps} props - The props of the component.
+ * @param {User} props.user - The active user.
  */
 export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   const [state, action, pending] = useActionState(

@@ -7,14 +7,17 @@ import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
+import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
 import { useActionState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Change password form component.
+ * @param {ChangePasswordFormProps} props - The props of the component.
+ * @param {User} props.user - The active user.
  */
-export default function ChangePasswordForm() {
+export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
   const processId = uuidv4();
 
   const [state, action, pending] = useActionState(changePassword, undefined);
@@ -43,6 +46,8 @@ export default function ChangePasswordForm() {
               id="change-password-form"
               onSubmit={(e) => handleActionSubmit(e, action)}
             >
+              <input id="userId" name="userId" defaultValue={user.id} hidden />
+
               <input
                 id="processId"
                 name="processId"
@@ -92,3 +97,10 @@ export default function ChangePasswordForm() {
     </section>
   );
 }
+
+/**
+ * Change password form component props.
+ */
+type ChangePasswordFormProps = {
+  user: User;
+};
