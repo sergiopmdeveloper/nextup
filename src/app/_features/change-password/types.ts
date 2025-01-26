@@ -4,6 +4,6 @@ export type ChangePasswordFormState =
         actualPassword?: string[];
         newPassword?: string[];
       };
-      unmatchedPasswords?: boolean;
+      passwordsValidated?: boolean;
     }
   | undefined;

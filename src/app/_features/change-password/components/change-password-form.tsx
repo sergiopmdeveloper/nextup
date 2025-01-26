@@ -7,9 +7,10 @@ import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Divider } from '@heroui/divider';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
+import { InputOtp } from '@heroui/input-otp';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
-import { useActionState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -21,6 +22,13 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
   const processId = uuidv4();
 
   const [state, action, pending] = useActionState(changePassword, undefined);
+  const [confirmChange, setConfirmChange] = useState(false);
+
+  useEffect(() => {
+    if (state?.passwordsValidated) {
+      setConfirmChange(true);
+    }
+  }, [state]);
 
   return (
     <section className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
@@ -68,6 +76,7 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
                 label="Actual password"
                 isInvalid={!!state?.errors?.actualPassword}
                 errorMessage={state?.errors?.actualPassword?.[0]}
+                isDisabled={confirmChange}
                 isRequired
               />
 
@@ -78,8 +87,18 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
                 label="New password"
                 isInvalid={!!state?.errors?.newPassword}
                 errorMessage={state?.errors?.newPassword?.[0]}
+                isDisabled={confirmChange}
                 isRequired
               />
+
+              <Divider />
+
+              {confirmChange && (
+                <div>
+                  <p className="text-xs">A code has been sent to your email</p>
+                  <InputOtp id="otp" name="name" length={6} />
+                </div>
+              )}
             </Form>
           </CardBody>
 
@@ -94,7 +113,7 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
               isLoading={pending}
             >
               {!pending && <ArrowRight />}
-              Send
+              {!confirmChange ? 'Send' : 'Confirm'}
             </Button>
           </CardFooter>
         </Card>
