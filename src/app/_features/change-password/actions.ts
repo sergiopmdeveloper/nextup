@@ -1,8 +1,12 @@
 'use server';
 
+import OtpEmail from '@/app/_features/base/components/otp-email';
 import { changePasswordFormSchema } from '@/app/_features/change-password/schemas';
 import { ChangePasswordFormState } from '@/app/_features/change-password/types';
 import argon2 from 'argon2';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Changes the password of a user.
@@ -46,6 +50,15 @@ export async function changePassword(
         },
       };
     }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await resend.emails.send({
+      from: 'Logo <onboarding@resend.dev>',
+      to: [formData.get('userEmail') as string],
+      subject: 'Logo - Confirm password change',
+      react: OtpEmail({ otp }),
+    });
 
     return {
       passwordsValidated: true,

@@ -19,7 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {User} props.user - The active user.
  */
 export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
-  const processId = uuidv4();
+  const processKey = uuidv4();
 
   const [state, action, pending] = useActionState(changePassword, undefined);
   const [confirmChange, setConfirmChange] = useState(false);
@@ -55,9 +55,16 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
               onSubmit={(e) => handleActionSubmit(e, action)}
             >
               <input
-                id="processId"
-                name="processId"
-                defaultValue={processId}
+                id="processKey"
+                name="processKey"
+                defaultValue={processKey}
+                hidden
+              />
+
+              <input
+                id="userEmail"
+                name="userEmail"
+                defaultValue={user.email}
                 hidden
               />
 
