@@ -1,5 +1,8 @@
 'use server';
 
+import OtpRepository from '@/app/_data/otp';
+import UserRepository from '@/app/_data/user';
+import { signOut } from '@/app/_features/auth/actions';
 import OtpEmail from '@/app/_features/base/components/otp-email';
 import { changePasswordFormSchema } from '@/app/_features/change-password/schemas';
 import { ChangePasswordFormState } from '@/app/_features/change-password/types';
@@ -51,11 +54,22 @@ export async function changePassword(
       };
     }
 
+    const userEmail = formData.get('userEmail') as string;
+
+    const user = await UserRepository.findByEmail(userEmail);
+
+    if (!user) {
+      await signOut();
+      return;
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await OtpRepository.create(user.id, 'change-password', otp);
 
     await resend.emails.send({
       from: 'Logo <onboarding@resend.dev>',
-      to: [formData.get('userEmail') as string],
+      to: [userEmail],
       subject: 'Logo - Confirm password change',
       react: OtpEmail({ otp }),
     });
@@ -64,4 +78,6 @@ export async function changePassword(
       passwordsValidated: true,
     };
   }
+
+  console.log(formData.get('otp') as string);
 }

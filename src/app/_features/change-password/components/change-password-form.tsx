@@ -11,7 +11,6 @@ import { InputOtp } from '@heroui/input-otp';
 import { type User } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Change password form component.
@@ -19,8 +18,6 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {User} props.user - The active user.
  */
 export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
-  const processKey = uuidv4();
-
   const [state, action, pending] = useActionState(changePassword, undefined);
   const [confirmChange, setConfirmChange] = useState(false);
 
@@ -54,13 +51,6 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
               id="change-password-form"
               onSubmit={(e) => handleActionSubmit(e, action)}
             >
-              <input
-                id="processKey"
-                name="processKey"
-                defaultValue={processKey}
-                hidden
-              />
-
               <input
                 id="userEmail"
                 name="userEmail"
@@ -103,7 +93,7 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
               {confirmChange && (
                 <div>
                   <p className="text-xs">A code has been sent to your email</p>
-                  <InputOtp id="otp" name="name" length={6} />
+                  <InputOtp id="otp" name="otp" length={6} />
                 </div>
               )}
             </Form>
