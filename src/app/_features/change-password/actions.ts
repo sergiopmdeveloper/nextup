@@ -7,6 +7,7 @@ import OtpEmail from '@/app/_features/base/components/otp-email';
 import { changePasswordFormSchema } from '@/app/_features/change-password/schemas';
 import { ChangePasswordFormState } from '@/app/_features/change-password/types';
 import argon2 from 'argon2';
+import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -21,7 +22,9 @@ export async function changePassword(
   _: ChangePasswordFormState,
   formData: FormData
 ): Promise<ChangePasswordFormState> {
-  if (!formData.get('otp')) {
+  const userEmail = formData.get('userEmail') as string;
+
+  if (!formData.get('otpId')) {
     const validatedFields = changePasswordFormSchema.safeParse({
       actualPassword: formData.get('actualPassword'),
       newPassword: formData.get('newPassword'),
@@ -54,8 +57,6 @@ export async function changePassword(
       };
     }
 
-    const userEmail = formData.get('userEmail') as string;
-
     const user = await UserRepository.findByEmail(userEmail);
 
     if (!user) {
@@ -63,21 +64,43 @@ export async function changePassword(
       return;
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpValue = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await OtpRepository.create(user.id, 'change-password', otp);
+    const otp = await OtpRepository.create(
+      user.id,
+      'change-password',
+      otpValue
+    );
 
     await resend.emails.send({
       from: 'Logo <onboarding@resend.dev>',
       to: [userEmail],
       subject: 'Logo - Confirm password change',
-      react: OtpEmail({ otp }),
+      react: OtpEmail({ otp: otpValue }),
     });
 
     return {
-      passwordsValidated: true,
+      otpId: otp.id,
     };
   }
 
-  console.log(formData.get('otp') as string);
+  const existingOtpId = formData.get('otpId') as string;
+
+  const existingOtp = await OtpRepository.findById(existingOtpId);
+
+  if (!existingOtp) {
+    redirect('/account');
+  }
+
+  const inputOtpValue = formData.get('otp') as string;
+
+  if (existingOtp.value !== inputOtpValue) {
+    return {
+      errors: {
+        otp: ['Invalid code.'],
+      },
+    };
+  }
+
+  return {};
 }

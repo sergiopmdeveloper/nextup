@@ -3,7 +3,8 @@ export type ChangePasswordFormState =
       errors?: {
         actualPassword?: string[];
         newPassword?: string[];
+        otp?: string[];
       };
-      passwordsValidated?: boolean;
+      otpId?: string;
     }
   | undefined;

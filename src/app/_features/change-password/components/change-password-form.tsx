@@ -20,9 +20,10 @@ import { useActionState, useEffect, useState } from 'react';
 export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
   const [state, action, pending] = useActionState(changePassword, undefined);
   const [confirmChange, setConfirmChange] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
-    if (state?.passwordsValidated) {
+    if (state?.otpId) {
       setConfirmChange(true);
     }
   }, [state]);
@@ -82,6 +83,8 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
                 name="newPassword"
                 type="password"
                 label="New password"
+                value={newPassword}
+                onValueChange={setNewPassword}
                 isInvalid={!!state?.errors?.newPassword}
                 errorMessage={state?.errors?.newPassword?.[0]}
                 isDisabled={confirmChange}
@@ -92,8 +95,33 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
 
               {confirmChange && (
                 <div>
+                  <input
+                    id="confirmedNewPassword"
+                    name="confirmedNewPassword"
+                    defaultValue={newPassword}
+                    hidden
+                  />
+
+                  <input
+                    id="otpId"
+                    name="otpId"
+                    defaultValue={state?.otpId}
+                    hidden
+                  />
+
                   <p className="text-xs">A code has been sent to your email</p>
-                  <InputOtp id="otp" name="otp" length={6} />
+
+                  <InputOtp
+                    id="otp"
+                    name="otp"
+                    length={6}
+                    isInvalid={!!state?.errors?.otp}
+                    errorMessage={
+                      <p className="font-normal text-danger-500">
+                        {state?.errors?.otp?.[0]}
+                      </p>
+                    }
+                  />
                 </div>
               )}
             </Form>
