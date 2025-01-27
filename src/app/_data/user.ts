@@ -108,3 +108,5 @@ export default class UserRepository {
     });
   }
 }
+
+// TODO: Improve repository functionalities.

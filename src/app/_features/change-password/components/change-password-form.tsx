@@ -160,3 +160,10 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
 type ChangePasswordFormProps = {
   user: User;
 };
+
+// TODO: The ChangePasswordFormProps type must be read-only.
+
+/**
+ * TODO: Split the current form into two forms based on the two types of actions that can be taken.
+ * /workspaces/nextup/src/app/_features/change-password/actions.ts.
+ */

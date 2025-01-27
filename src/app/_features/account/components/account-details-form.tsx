@@ -93,3 +93,5 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
 type AccountDetailsFormProps = {
   user: User;
 };
+
+// TODO: The AccountDetailsFormProps type must be read-only.

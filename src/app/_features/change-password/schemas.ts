@@ -10,3 +10,5 @@ export const changePasswordFormSchema = z.object({
     .min(1, 'Password field is required.')
     .min(6, 'Password must be at least 6 characters.'),
 });
+
+// TODO: /src/app/_features/auth/schemas.ts.

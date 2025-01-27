@@ -29,3 +29,6 @@ export default async function Account() {
     </Section>
   );
 }
+
+// TODO: Check if we can better manage the confirmation of the user's existence.
+// TODO: /src/app/_features/account/components/change-email-password-block.tsx.

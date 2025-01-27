@@ -19,3 +19,5 @@ export default async function ChangePassword() {
     </main>
   );
 }
+
+// TODO: Check if we can better manage the confirmation of the user's existence.

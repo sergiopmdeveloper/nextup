@@ -11,3 +11,6 @@ export default function OtpEmail({ otp }: OtpEmailProps) {
 type OtpEmailProps = {
   otp: string;
 };
+
+// TODO: The OtpEmailProps type must be read-only.
+// TODO: Use the React Email library to improve the quality of this and future emails.

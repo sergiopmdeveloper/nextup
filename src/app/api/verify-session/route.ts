@@ -39,3 +39,5 @@ export async function GET(_: Request): Promise<Response> {
     return Response.json({ detail: 'Session has expired.' }, { status: 410 });
   }
 }
+
+// TODO: Specific handling of expiry error.

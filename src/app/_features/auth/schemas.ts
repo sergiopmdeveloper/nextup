@@ -25,3 +25,5 @@ export const signUpFormSchema = z.object({
     .min(1, 'Password field is required.')
     .min(6, 'Password must be at least 6 characters.'),
 });
+
+// TODO: Create validators that can be reused in different schemas.

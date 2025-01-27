@@ -33,3 +33,5 @@ export default class SessionRepository {
     });
   }
 }
+
+// TODO: Improve repository functionalities.

@@ -35,3 +35,5 @@ export default function ChangeEmailPasswordBlock() {
     </Card>
   );
 }
+
+// TODO: Rename ChangeEmailPasswordBlock component to something better.

@@ -111,3 +111,5 @@ export async function changePassword(
 
   redirect('/account?status=passwordUpdated');
 }
+
+// TODO: Modularise logic into two actions that split responsibilities.

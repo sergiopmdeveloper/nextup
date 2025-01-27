@@ -70,3 +70,10 @@ export async function middleware(
     }
   }
 }
+
+// TODO: Reuse code in relation to generated responses.
+
+/**
+ * TODO: The session expiry error will change and we will have to consider that there will be an unexpected error as well.
+ * /src/app/api/verify-session/route.ts.
+ */

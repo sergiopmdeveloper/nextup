@@ -115,3 +115,5 @@ export default function Header() {
     </Navbar>
   );
 }
+
+// TODO: See if we can reuse different constants to make conditional rendering cleaner.

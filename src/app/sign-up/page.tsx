@@ -14,3 +14,6 @@ export default function SignUp() {
     </main>
   );
 }
+
+// TODO: Check if 'use client' is mandatory.
+// TODO: Remove Toaster component because it is not necessary.
