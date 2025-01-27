@@ -14,6 +14,8 @@ import toast from 'react-hot-toast';
 
 /**
  * Account details form component.
+ * @param {AccountDetailsFormProps} props - The props of the component.
+ * @param {User} props.user - The active user.
  */
 export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   const [state, action, pending] = useActionState(
@@ -30,7 +32,7 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
   }, [state]);
 
   return (
-    <Card className="mt-4 w-1/2 border shadow-none">
+    <Card className="border shadow-none sm:w-1/2">
       <CardHeader>
         <div className="space-y-0.5">
           <h1 className="text-xl font-bold text-content1-foreground">

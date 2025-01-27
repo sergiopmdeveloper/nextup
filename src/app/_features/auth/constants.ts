@@ -7,4 +7,4 @@ export const SESSION_ID_COOKIE = {
 };
 
 export const AUTH_PATHS = ['/sign-in', '/sign-up'];
-export const PROTECTED_PATHS = ['/account'];
+export const PROTECTED_PATHS = ['/account', '/change-password'];
