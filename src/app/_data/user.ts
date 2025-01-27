@@ -90,4 +90,21 @@ export default class UserRepository {
       },
     });
   }
+
+  /**
+   * Updates the pasword of a user.
+   * @param {string} userId - The ID of the user.
+   * @param {string} password - The new password.
+   * @returns {Promise<User>} The updated user.
+   */
+  static async updatePassword(userId: string, password: string): Promise<User> {
+    return await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password,
+      },
+    });
+  }
 }

@@ -102,5 +102,12 @@ export async function changePassword(
     };
   }
 
-  return {};
+  const userId = formData.get('userId') as string;
+  const confirmedNewPassword = formData.get('confirmedNewPassword') as string;
+
+  const hashedNewPassword = await argon2.hash(confirmedNewPassword);
+
+  await UserRepository.updatePassword(userId, hashedNewPassword);
+
+  redirect('/account?status=passwordUpdated');
 }

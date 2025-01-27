@@ -109,6 +109,13 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
                     hidden
                   />
 
+                  <input
+                    id="userId"
+                    name="userId"
+                    defaultValue={user.id}
+                    hidden
+                  />
+
                   <p className="text-xs">A code has been sent to your email</p>
 
                   <InputOtp
