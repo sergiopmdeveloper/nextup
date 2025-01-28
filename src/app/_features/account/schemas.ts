@@ -1,10 +1,6 @@
+import { NAME_VALIDATOR } from '@/app/_features/auth/validators';
 import { z } from 'zod';
 
 export const accountDetailsFormSchema = z.object({
-  name: z
-    .string()
-    .regex(/^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$|^$/, 'Name format is invalid.')
-    .optional(),
+  name: NAME_VALIDATOR,
 });
-
-// TODO: /src/app/_features/auth/schemas.ts.

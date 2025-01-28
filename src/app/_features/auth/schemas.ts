@@ -1,29 +1,17 @@
+import {
+  EMAIL_VALIDATOR,
+  NAME_VALIDATOR,
+  PASSWORD_VALIDATOR,
+} from '@/app/_features/auth/validators';
 import { z } from 'zod';
 
 export const signInFormSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email field is required.')
-    .email('Email format is invalid.'),
-  password: z
-    .string()
-    .min(1, 'Password field is required.')
-    .min(6, 'Password must be at least 6 characters.'),
+  email: EMAIL_VALIDATOR,
+  password: PASSWORD_VALIDATOR,
 });
 
 export const signUpFormSchema = z.object({
-  name: z
-    .string()
-    .regex(/^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$|^$/, 'Name format is invalid.')
-    .optional(),
-  email: z
-    .string()
-    .min(1, 'Email field is required.')
-    .email('Email format is invalid.'),
-  password: z
-    .string()
-    .min(1, 'Password field is required.')
-    .min(6, 'Password must be at least 6 characters.'),
+  name: NAME_VALIDATOR,
+  email: EMAIL_VALIDATOR,
+  password: PASSWORD_VALIDATOR,
 });
-
-// TODO: Create validators that can be reused in different schemas.
