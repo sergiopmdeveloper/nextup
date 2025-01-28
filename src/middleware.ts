@@ -42,6 +42,7 @@ export async function middleware(
     const sessionIdCookieNotProvided = verifySessionResponse.status === 400;
     const sessionNotFound = verifySessionResponse.status === 404;
     const sessionExpired = verifySessionResponse.status === 410;
+    const sessionInvalid = verifySessionResponse.status === 500;
 
     if (sessionIdCookieNotProvided) {
       return NextResponse.redirect(
@@ -68,12 +69,17 @@ export async function middleware(
 
       return response;
     }
+
+    if (sessionInvalid) {
+      const response = NextResponse.redirect(
+        new URL('/sign-in?status=unauthorized', request.url)
+      );
+
+      response.cookies.delete(SESSION_ID_COOKIE.name);
+
+      return response;
+    }
   }
 }
 
 // TODO: Reuse code in relation to generated responses.
-
-/**
- * TODO: The session expiry error will change and we will have to consider that there will be an unexpected error as well.
- * /src/app/api/verify-session/route.ts.
- */

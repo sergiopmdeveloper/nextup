@@ -1,6 +1,7 @@
 import SessionRepository from '@/app/_data/session';
 import { KEY, SESSION_ID_COOKIE } from '@/app/_features/auth/constants';
 import { jwtVerify } from 'jose';
+import { JWTExpired } from 'jose/errors';
 import { cookies } from 'next/headers';
 
 /**
@@ -24,7 +25,7 @@ export async function GET(_: Request): Promise<Response> {
 
   if (!session) {
     return Response.json(
-      { detail: 'Session not found fot the given session ID.' },
+      { detail: 'Session not found for the given session ID.' },
       { status: 404 }
     );
   }
@@ -36,8 +37,13 @@ export async function GET(_: Request): Promise<Response> {
       status: 200,
     });
   } catch (error) {
-    return Response.json({ detail: 'Session has expired.' }, { status: 410 });
+    if (error instanceof JWTExpired) {
+      return Response.json({ detail: 'Session has expired.' }, { status: 410 });
+    } else {
+      return Response.json(
+        { detail: 'Session is not valid.' },
+        { status: 500 }
+      );
+    }
   }
 }
-
-// TODO: Specific handling of expiry error.
