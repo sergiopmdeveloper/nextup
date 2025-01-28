@@ -1,6 +1,6 @@
 import {
-  AUTH_PATHS,
   PROTECTED_PATHS,
+  PUBLIC_PATHS,
   SESSION_ID_COOKIE,
 } from '@/app/_features/auth/constants';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -16,7 +16,7 @@ export async function middleware(
   const currentPath = request.nextUrl.pathname;
   const sessionIdCookie = request.cookies.get(SESSION_ID_COOKIE.name);
 
-  if (AUTH_PATHS.includes(currentPath)) {
+  if (PUBLIC_PATHS.includes(currentPath)) {
     if (sessionIdCookie) {
       return NextResponse.redirect(new URL('/account', request.url));
     }

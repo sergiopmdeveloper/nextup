@@ -21,6 +21,83 @@ import { usePathname } from 'next/navigation';
 export default function Header() {
   const pathname = usePathname();
 
+  const isProtectedPath = PROTECTED_PATHS.includes(pathname);
+
+  /**
+   * Public links component.
+   */
+  const PublicLinks = () => (
+    <>
+      <NavbarItem>
+        <Link color="foreground">Public links</Link>
+      </NavbarItem>
+    </>
+  );
+
+  /**
+   * Private links component.
+   */
+  const PrivateLinks = () => (
+    <>
+      <NavbarItem>
+        <Link color="foreground">Private links</Link>
+      </NavbarItem>
+    </>
+  );
+
+  /**
+   * Auth buttons component.
+   */
+  const AuthButtons = () => (
+    <>
+      <NavbarItem className="hidden md:block">
+        <Button as={Link} href="/sign-up" variant="flat" color="secondary">
+          Sign up
+        </Button>
+      </NavbarItem>
+
+      <NavbarItem>
+        <Button as={Link} href="/sign-in" variant="flat" color="primary">
+          Sign in
+        </Button>
+      </NavbarItem>
+    </>
+  );
+
+  /**
+   * Sign out button component.
+   */
+  const SignOutButton = () => (
+    <NavbarItem>
+      <form action={signOut}>
+        <Button type="submit" variant="flat" color="danger">
+          Sign out
+        </Button>
+      </form>
+    </NavbarItem>
+  );
+
+  /**
+   * Mobile menu component.
+   */
+  const MobileMenuLinks = () => (
+    <>
+      <NavbarMenuItem>
+        <Link className="w-full" color="foreground" size="lg">
+          {isProtectedPath ? 'Private links' : 'Public links'}
+        </Link>
+      </NavbarMenuItem>
+
+      {!isProtectedPath && (
+        <NavbarMenuItem>
+          <Link className="w-full" href="/sign-up" color="secondary" size="lg">
+            Sign up
+          </Link>
+        </NavbarMenuItem>
+      )}
+    </>
+  );
+
   return (
     <Navbar maxWidth="2xl">
       <NavbarContent>
@@ -34,86 +111,16 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        {!PROTECTED_PATHS.includes(pathname) ? (
-          <>
-            <NavbarItem>
-              <Link color="foreground">Public links</Link>
-            </NavbarItem>
-          </>
-        ) : (
-          <>
-            <NavbarItem>
-              <Link color="foreground">Private links</Link>
-            </NavbarItem>
-          </>
-        )}
+        {isProtectedPath ? <PrivateLinks /> : <PublicLinks />}
       </NavbarContent>
 
       <NavbarContent justify="end">
-        {!PROTECTED_PATHS.includes(pathname) ? (
-          <>
-            <NavbarItem className="hidden md:block">
-              <Button
-                as={Link}
-                href="/sign-up"
-                variant="flat"
-                color="secondary"
-              >
-                Sign up
-              </Button>
-            </NavbarItem>
-
-            <NavbarItem>
-              <Button as={Link} href="/sign-in" variant="flat" color="primary">
-                Sign in
-              </Button>
-            </NavbarItem>
-          </>
-        ) : (
-          <>
-            <NavbarItem>
-              <form action={signOut}>
-                <Button type="submit" variant="flat" color="danger">
-                  Sign out
-                </Button>
-              </form>
-            </NavbarItem>
-          </>
-        )}
+        {isProtectedPath ? <SignOutButton /> : <AuthButtons />}
       </NavbarContent>
 
       <NavbarMenu className="overflow-y-hidden">
-        {!PROTECTED_PATHS.includes(pathname) ? (
-          <>
-            <NavbarMenuItem>
-              <Link className="w-full" color="foreground" size="lg">
-                Public links
-              </Link>
-            </NavbarMenuItem>
-
-            <NavbarMenuItem>
-              <Link
-                className="w-full"
-                href="/sign-up"
-                color="secondary"
-                size="lg"
-              >
-                Sign up
-              </Link>
-            </NavbarMenuItem>
-          </>
-        ) : (
-          <>
-            <NavbarMenuItem>
-              <Link className="w-full" color="foreground" size="lg">
-                Private links
-              </Link>
-            </NavbarMenuItem>
-          </>
-        )}
+        <MobileMenuLinks />
       </NavbarMenu>
     </Navbar>
   );
 }
-
-// TODO: See if we can reuse different constants to make conditional rendering cleaner.
