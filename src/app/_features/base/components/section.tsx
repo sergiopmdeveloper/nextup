@@ -14,8 +14,6 @@ export default function Section({ children }: SectionProps) {
 /**
  * Section component props.
  */
-type SectionProps = {
+type SectionProps = Readonly<{
   children: React.ReactNode;
-};
-
-// TODO: The SectionProps type must be read-only.
+}>;

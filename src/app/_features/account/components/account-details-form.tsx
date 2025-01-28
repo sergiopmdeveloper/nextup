@@ -90,8 +90,6 @@ export default function AccountDetailsForm({ user }: AccountDetailsFormProps) {
 /**
  * Account details form component props.
  */
-type AccountDetailsFormProps = {
+type AccountDetailsFormProps = Readonly<{
   user: User;
-};
-
-// TODO: The AccountDetailsFormProps type must be read-only.
+}>;

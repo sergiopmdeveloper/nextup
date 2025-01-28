@@ -4,9 +4,9 @@ import { Divider } from '@heroui/divider';
 import { Link } from '@heroui/link';
 
 /**
- * Change email password block component.
+ * Change credentials component.
  */
-export default function ChangeEmailPasswordBlock() {
+export default function ChangeCredentials() {
   return (
     <Card className="h-fit border shadow-none sm:w-1/2">
       <CardHeader>

@@ -10,14 +10,11 @@ export default async function ChangePassword() {
 
   if (!user) {
     await signOut();
-    throw new Error('User not found for the active session');
   }
 
   return (
     <main>
-      <ChangePasswordForm user={user} />
+      <ChangePasswordForm user={user!} />
     </main>
   );
 }
-
-// TODO: Check if we can better manage the confirmation of the user's existence.

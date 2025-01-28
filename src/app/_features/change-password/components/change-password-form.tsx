@@ -157,11 +157,9 @@ export default function ChangePasswordForm({ user }: ChangePasswordFormProps) {
 /**
  * Change password form component props.
  */
-type ChangePasswordFormProps = {
+type ChangePasswordFormProps = Readonly<{
   user: User;
-};
-
-// TODO: The ChangePasswordFormProps type must be read-only.
+}>;
 
 /**
  * TODO: Split the current form into two forms based on the two types of actions that can be taken.

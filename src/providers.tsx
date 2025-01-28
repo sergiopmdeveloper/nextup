@@ -14,6 +14,4 @@ export function Providers({ children }: ProvidersProps) {
 /**
  * Providers component props.
  */
-type ProvidersProps = { children: React.ReactNode };
-
-// TODO: The ProvidersProps type must be read-only.
+type ProvidersProps = Readonly<{ children: React.ReactNode }>;
