@@ -16,17 +16,27 @@ export async function middleware(
   const currentPath = request.nextUrl.pathname;
   const sessionIdCookie = request.cookies.get(SESSION_ID_COOKIE.name);
 
+  const authorizedResponse = NextResponse.redirect(
+    new URL('/account', request.url)
+  );
+
+  const unauthorizedResponse = NextResponse.redirect(
+    new URL('/sign-in?status=unauthorized', request.url)
+  );
+
+  const expiredSessionResponse = NextResponse.redirect(
+    new URL('/sign-in?status=expired', request.url)
+  );
+
   if (PUBLIC_PATHS.includes(currentPath)) {
     if (sessionIdCookie) {
-      return NextResponse.redirect(new URL('/account', request.url));
+      return authorizedResponse;
     }
   }
 
   if (PROTECTED_PATHS.includes(currentPath)) {
     if (!sessionIdCookie) {
-      return NextResponse.redirect(
-        new URL('/sign-in?status=unauthorized', request.url)
-      );
+      return unauthorizedResponse;
     }
 
     const verifySessionResponse = await fetch(
@@ -45,41 +55,22 @@ export async function middleware(
     const sessionInvalid = verifySessionResponse.status === 500;
 
     if (sessionIdCookieNotProvided) {
-      return NextResponse.redirect(
-        new URL('/sign-in?status=unauthorized', request.url)
-      );
+      return unauthorizedResponse;
     }
 
     if (sessionNotFound) {
-      const response = NextResponse.redirect(
-        new URL('/sign-in?status=unauthorized', request.url)
-      );
-
-      response.cookies.delete(SESSION_ID_COOKIE.name);
-
-      return response;
+      unauthorizedResponse.cookies.delete(SESSION_ID_COOKIE.name);
+      return unauthorizedResponse;
     }
 
     if (sessionExpired) {
-      const response = NextResponse.redirect(
-        new URL('/sign-in?status=expired', request.url)
-      );
-
-      response.cookies.delete(SESSION_ID_COOKIE.name);
-
-      return response;
+      expiredSessionResponse.cookies.delete(SESSION_ID_COOKIE.name);
+      return expiredSessionResponse;
     }
 
     if (sessionInvalid) {
-      const response = NextResponse.redirect(
-        new URL('/sign-in?status=unauthorized', request.url)
-      );
-
-      response.cookies.delete(SESSION_ID_COOKIE.name);
-
-      return response;
+      unauthorizedResponse.cookies.delete(SESSION_ID_COOKIE.name);
+      return unauthorizedResponse;
     }
   }
 }
-
-// TODO: Reuse code in relation to generated responses.
