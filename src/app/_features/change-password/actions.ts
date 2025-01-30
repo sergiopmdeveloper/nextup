@@ -3,7 +3,8 @@
 import OtpRepository from '@/app/_data/otp';
 import UserRepository from '@/app/_data/user';
 import { signOut } from '@/app/_features/auth/actions';
-import OtpEmail from '@/app/_features/base/components/otp-email';
+import OtpEmail from '@/app/_features/base/emails/otp-email';
+import { CHANGE_PASSWORD_PROCESS } from '@/app/_features/change-password/constants';
 import { changePasswordFormSchema } from '@/app/_features/change-password/schemas';
 import { ChangePasswordFormState } from '@/app/_features/change-password/types';
 import argon2 from 'argon2';
@@ -68,7 +69,7 @@ export async function changePassword(
 
     const otp = await OtpRepository.create(
       user.id,
-      'change-password',
+      CHANGE_PASSWORD_PROCESS,
       otpValue
     );
 
@@ -76,7 +77,7 @@ export async function changePassword(
       from: 'Logo <onboarding@resend.dev>',
       to: [userEmail],
       subject: 'Logo - Confirm password change',
-      react: OtpEmail({ otp: otpValue }),
+      react: OtpEmail({ otp: otpValue, process: CHANGE_PASSWORD_PROCESS }),
     });
 
     return {
@@ -105,9 +106,10 @@ export async function changePassword(
   const userId = formData.get('userId') as string;
   const confirmedNewPassword = formData.get('confirmedNewPassword') as string;
 
-  const hashedNewPassword = await argon2.hash(confirmedNewPassword);
-
-  await UserRepository.updatePassword(userId, hashedNewPassword);
+  await UserRepository.updatePassword(
+    userId,
+    await argon2.hash(confirmedNewPassword)
+  );
 
   redirect('/account?status=passwordUpdated');
 }
